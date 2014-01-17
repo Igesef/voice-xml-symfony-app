@@ -1,0 +1,5 @@
+igesef_news:
+    resource: "@IgesefNewsBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
