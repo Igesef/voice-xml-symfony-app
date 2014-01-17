@@ -95,4 +95,14 @@ class Category
     {
         return $this->parent;
     }
+
+    /**
+     * Returns category name
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->name;
+    }
 }

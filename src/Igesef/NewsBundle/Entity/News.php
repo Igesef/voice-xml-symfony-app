@@ -123,4 +123,14 @@ class News
     {
         return $this->category;
     }
+
+    /**
+     * Returns the news title
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->title;
+    }
 }
