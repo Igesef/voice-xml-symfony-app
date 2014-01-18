@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Igesef\NewsBundle\Entity\Category;
 use Igesef\NewsBundle\Form\CategoryType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Category controller.
@@ -17,11 +18,35 @@ use Igesef\NewsBundle\Form\CategoryType;
  */
 class CategoryController extends Controller
 {
+    /**
+     * @Route("/", name="index")
+     * @Method("GET")
+     */
+    public function indexVoiceXMLAction()
+    {
+        $response = new Response();
+        $response->headers->set('Content-Type', 'text/xml');
 
+        return $this->render("IgesefNewsBundle:Category:indexvoicexml.xml.twig", array(), $response);
+    }
+
+    /**
+     * Simple subdialog
+     *
+     * @Route("/subdialog.xml", name="subdialog")
+     * @Method("GET")
+     */
+    public function subdialogAction()
+    {
+        $response = new Response();
+        $response->headers->set('Content-Type', 'text/xml');
+
+        return $this->render("IgesefNewsBundle:Category:subdialog.xml.twig", array(), $response);
+    }
     /**
      * Lists all Category entities.
      *
-     * @Route("/", name="category")
+     * @Route("/index", name="category")
      * @Method("GET")
      * @Template()
      */
@@ -38,7 +63,7 @@ class CategoryController extends Controller
     /**
      * Creates a new Category entity.
      *
-     * @Route("/", name="category_create")
+     * @Route("/index", name="category_create")
      * @Method("POST")
      * @Template("IgesefNewsBundle:Category:new.html.twig")
      */

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0"
+      xml:lang="en-us">
+    <noinput>
+        Please make a selection.
+        <reprompt/>
+    </noinput>
+
+    <form id="start">
+
+        <field name="categoryselection">
+            <prompt>
+                Welcome to news service. Please choose a topic you are interested in. Available choices are:
+                World, Science, Sports, News of the day. After selecting topic and subtopic you can choose to listen to
+                the subtopic news or choose to subscribe for text messages subscription, for selected subtopic
+            </prompt>
+            <grammar mode="voice" root="category">
+                <rule id="categoryselection" scope="public">
+                    <one-of>
+                        <item>World</item>
+                        <item>Science</item>
+                        <item>Sports</item>
+                        <item>News of the day</item>
+                    </one-of>
+                </rule>
+            </grammar>
+
+            <filled>
+                <if cond="categoryselection=='World'">
+                    <prompt>
+                        You have selected World.
+                    </prompt>
+                    <goto next="#world-news"/>
+                    <else/>
+                    <prompt>
+                        Not implemented
+                    </prompt>
+                    <goto next="#end"/>
+                </if>
+            </filled>
+        </field>
+    </form>
+
+
+    <form id="world-news">
+        <field name="worldselection">
+            <prompt>
+                Please choose a world region for which you would like to hear the news.
+                Avaible choices are: Europe; North America; South America; Asia;
+            </prompt>
+            <grammar mode="voice" root="worldtopics">
+                <rule id="worldtopics" scope="public">
+                    <one-of>
+                        <item>Europe</item>
+                        <item>North America</item>
+                        <item>South America</item>
+                        <item>Asia</item>
+                    </one-of>
+                </rule>
+            </grammar>
+        </field>
+
+
+        <field name="news_choice"
+               cond="worldselection !== ''">
+            <grammar mode="voice" root="listen">
+                <rule id="listen" scope="public">
+                    <one-of>
+                        <item>listen</item>
+                        <item>subscribe</item>
+                    </one-of>
+                </rule>
+            </grammar>
+            <prompt>
+                If you want to subscribe, say subscribe. If you want to hear the news first, please say listen.
+            </prompt>
+
+            <filled>
+                <if cond="news_choice=='listen'">
+                    News for <value expr="worldselection"/>...
+                    <clear namelist="subscription_listen"/>
+                </if>
+            </filled>
+        </field>
+
+        <field name="subscription_listen" expr="'no'">
+            <prompt>
+                Would you like to subscribe for european news?
+            </prompt>
+            <grammar mode="voice" root="subcribe">
+                <rule id="subcribe" scope="public">
+                    <one-of>
+                        <item>yes</item>
+                        <item>no</item>
+                    </one-of>
+                </rule>
+            </grammar>
+            <filled>
+                <if cond="subscription_listen == 'no'">
+                    <goto next="#end"/>
+                </if>
+            </filled>
+        </field>
+
+        <subdialog name="subscription" src="subdialog.xml">
+            <param name="category" expr="worldselection"/>
+        </subdialog>
+
+        <filled namelist="subscription">
+            You want to receive
+            <value expr="subscription.frequency"/>
+            messages for topic
+            <value expr="worldselection"/>
+            sent to phone number
+            <value expr="subscription.phoneNumber"/>
+            <goto next="#end"/>
+        </filled>
+    </form>
+
+    <form id="end">
+        <field name="ending">
+            <prompt>
+                Would you like to hear or subscribe for more news?
+            </prompt>
+            <grammar mode="voice" root="end">
+                <rule id="end" scope="public">
+                    <one-of>
+                        <item>yes</item>
+                        <item>no</item>
+                    </one-of>
+                </rule>
+            </grammar>
+            <filled>
+                <if cond="ending=='yes'">
+                    <clear/>
+                    <goto next="#start"/>
+                    <elseif cond="ending=='no'"/>
+                    <prompt>
+                        Goodbye, thanks for calling.
+                    </prompt>
+                </if>
+            </filled>
+        </field>
+    </form>
+</vxml>

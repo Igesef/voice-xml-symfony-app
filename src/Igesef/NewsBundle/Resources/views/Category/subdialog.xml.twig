@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0"
+      xml:lang="en-us">
+    <form>
+        <var name="category"/>
+        <block>
+            <prompt>
+                You have selected to subscribe to <value expr="category"/> news.
+            </prompt>
+        </block>
+        <field name="frequency">
+            <prompt>
+                Please choose frequency of your messages. Avaible choices are: Twice a day, Once a day, Every other day, Twice a week, Once a week
+            </prompt>
+            <grammar mode="voice" root="frequencyoptions">
+                <rule id="frequencyoptions" scope="public">
+                    <one-of>
+                        <item>Once a day</item>
+                        <item>Every other day</item>
+                        <item>Twice a week</item>
+                        <item>Once a week </item>
+                    </one-of>
+                </rule>
+            </grammar>
+        </field>
+        <field name="phoneNumber" type="digits">
+            <prompt>
+                Please provide your phone number.
+            </prompt>
+        </field>
+        <filled>
+            <return namelist="frequency phoneNumber"/>
+        </filled>
+    </form>
+</vxml>
