@@ -46,7 +46,7 @@
         <field name="worldselection">
             <prompt>
                 Please choose a world region for which you would like to hear the news.
-                Avaible choices are: Europe; North America; South America; Asia;
+                Available choices are: Europe; North America; South America; Asia;
             </prompt>
             <grammar mode="voice" root="worldtopics">
                 <rule id="worldtopics" scope="public">
@@ -77,7 +77,7 @@
 
             <filled>
                 <if cond="news_choice=='listen'">
-                    News for <value expr="worldselection"/>...
+                    News for<value expr="worldselection"/>...
                     <clear namelist="subscription_listen"/>
                 </if>
             </filled>
@@ -87,8 +87,8 @@
             <prompt>
                 Would you like to subscribe for european news?
             </prompt>
-            <grammar mode="voice" root="subcribe">
-                <rule id="subcribe" scope="public">
+            <grammar mode="voice" root="subscribe">
+                <rule id="subscribe" scope="public">
                     <one-of>
                         <item>yes</item>
                         <item>no</item>
@@ -102,7 +102,7 @@
             </filled>
         </field>
 
-        <subdialog name="subscription" src="subdialog.xml">
+        <subdialog name="subscription" src="{{ path('subscribe') }}">
             <param name="category" expr="worldselection"/>
         </subdialog>
 
