@@ -11,7 +11,7 @@
         <field name="category_selection">
             <prompt>
                 Welcome to news service. Please choose news category you are interested in. Available choices are:
-                {% for category in categories %} {{ category }} {% endfor %}. You can also listen to most important
+                {% for category in categories %} {{ category }}; {% endfor %}. You can also listen to most important
                 news of the day, by saying "news of the day". After selecting main category and subcategory, you can
                 choose to listen to the subcategory news or choose to subscribe for text messages subscription service
                 for selected subcategory.
@@ -27,7 +27,7 @@
 
             <filled>
                 <value expr="category_selection"/>
-                <submit next="{{ path('subcategories') }}" method="POST"/>
+                <submit next="{{ path('subcategories') }}"/>
             </filled>
         </field>
     </form>

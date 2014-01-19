@@ -51,7 +51,7 @@ class VXMLCategoryController extends Controller
      * Main action of the application
      *
      * @Route("/subcategories", name="subcategories")
-     * @Method("POST")
+     * @Method("GET")
      *
      * @param Request $request
      *
@@ -61,17 +61,9 @@ class VXMLCategoryController extends Controller
      */
     public function subcategoriesAction(Request $request)
     {
-
-        $form = $this->createFormBuilder()
-            ->add('category', 'text')
-            ->getForm();
-
-        if ($request->getMethod() == 'POST') {
-            $form->submit($request);
-            // data is an array with "category" key
-            $data = $form->getData();
-
-            $categoryName = $data['category'];
+        if ($request->getMethod() == 'GET') {
+            // category is in query->parameters with "category" key
+            $categoryName = $request->get('category');
             $repository = $this->getRepository();
 
             /** @var Category $category */
@@ -88,12 +80,12 @@ class VXMLCategoryController extends Controller
 
             return $this->render(
                 "IgesefNewsBundle:VXMLCategory:subcategories.xml.twig",
-                array('categories' => $categories),
+                array('subcategories' => $categories, 'category' => $categoryName),
                 $response
             );
 
         } else {
-           throw new MethodNotAllowedException('Cannot access subcategories without posting main category');
+            throw new MethodNotAllowedException('Cannot access subcategories without posting main category');
         }
     }
 

@@ -35,7 +35,8 @@ class CategoryRepository extends EntityRepository
     public function findSubcategoriesByCategory(Category $category)
     {
         $qb = $this->createQueryBuilder('category');
-        $qb->where($qb->expr()->eq('category.parent', $category));
+        $qb->where($qb->expr()->eq('category.parent', ':category'));
+        $qb->setParameter('category', $category);
 
         return $qb->getQuery()->getResult();
     }
