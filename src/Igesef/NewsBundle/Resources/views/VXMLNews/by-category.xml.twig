@@ -2,51 +2,18 @@
 <vxml version="2.0"
       xml:lang="en-us">
     <noinput>
-        Please, make a selection
+        Please choose subcategory.
         <reprompt/>
     </noinput>
 
     <form id="start">
-        <field name="category">
-            <prompt>
-                Please choose a subcategory for {{ category }}.
-                Available choices are: {% for subcategory in subcategories %} {{ subcategory.name }}; {% endfor %}
-            </prompt>
-            <grammar mode="voice" root="subcategories">
-                <rule id="subcategories" scope="public">
-                    <one-of>
-                        {% for subcategory in subcategories %}
-                        <item>{{ subcategory.name }}</item>
-                        {% endfor %}
-                    </one-of>
-                </rule>
-            </grammar>
-        </field>
-
-
-        <field name="news_choice"
-               cond="category !== ''">
-            <grammar mode="voice" root="listen">
-                <rule id="listen" scope="public">
-                    <one-of>
-                        <item>listen</item>
-                        <item>subscribe</item>
-                    </one-of>
-                </rule>
-            </grammar>
-            <prompt>
-                If you want to subscribe, say subscribe. If you want to hear the news first, please say listen.
-            </prompt>
-
-            <filled>
-                <if cond="news_choice=='listen'">
-                    <submit next="{{ path('news-by-category') }}"/>
-
-                    <clear namelist="subscription_listen"/>
-                </if>
-            </filled>
-        </field>
-
+        <prompt>
+            News for {{ category }}.
+            {% for info in news %}
+                {{ info.title }}:
+                {{ info.content }}.
+            {% endfor %}
+        </prompt>
         <field name="subscription_listen" expr="'no'">
             <prompt>
                 Would you like to subscribe for <value expr="subcategory_selection"/> news?

@@ -11,7 +11,6 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
-use Symfony\Component\Translation\Exception\InvalidResourceException;
 
 /**
  * VoiceXML controller for category actions
@@ -48,7 +47,7 @@ class VXMLCategoryController extends Controller
     }
 
     /**
-     * Main action of the application
+     * Lists subcategories for selection or directly forwards to news for category action if none subcategories found
      *
      * @Route("/subcategories", name="subcategories")
      * @Method("GET")
@@ -75,14 +74,24 @@ class VXMLCategoryController extends Controller
 
             $categories = $repository->findSubcategoriesByCategory($category);
 
-            $response = new Response();
-            $response->headers->set('Content-Type', 'text/xml');
+            if (!empty($categories)) {
+                $response = new Response();
+                $response->headers->set('Content-Type', 'text/xml');
 
-            return $this->render(
-                "IgesefNewsBundle:VXMLCategory:subcategories.xml.twig",
-                array('subcategories' => $categories, 'category' => $categoryName),
-                $response
-            );
+                return $this->render(
+                    "IgesefNewsBundle:VXMLCategory:subcategories.xml.twig",
+                    array('subcategories' => $categories, 'category' => $categoryName),
+                    $response
+                );
+            } else {
+                $response = $this->forward(
+                    'IgesefNewsBundle:VXMLNews:getNewsByCategory',
+                    array(),
+                    array('category' => $categoryName)
+                );
+
+                return $response;
+            }
 
         } else {
             throw new MethodNotAllowedException('Cannot access subcategories without posting main category');

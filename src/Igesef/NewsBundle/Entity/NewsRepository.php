@@ -2,6 +2,7 @@
 
 namespace Igesef\NewsBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -12,4 +13,19 @@ use Doctrine\ORM\EntityRepository;
  */
 class NewsRepository extends EntityRepository
 {
+    /**
+     * Find all news entries by specified category
+     *
+     * @param Category $category
+     *
+     * @return ArrayCollection|News[]
+     */
+    public function findNewsByCategory(Category $category)
+    {
+        $qb = $this->createQueryBuilder('news');
+        $qb->where($qb->expr()->eq('news.category', ':category'));
+        $qb->setParameter('category', $category);
+
+        return $qb->getQuery()->getResult();
+    }
 }
