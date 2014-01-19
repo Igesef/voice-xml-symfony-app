@@ -8,7 +8,7 @@
 
     <form id="start">
 
-        <field name="category_selection">
+        <field name="category">
             <prompt>
                 Welcome to news service. Please choose news category you are interested in. Available choices are:
                 {% for category in categories %} {{ category }}; {% endfor %}. You can also listen to most important
@@ -26,7 +26,7 @@
             </grammar>
 
             <filled>
-                <value expr="category_selection"/>
+                <value expr="category"/>
                 <submit next="{{ path('subcategories') }}"/>
             </filled>
         </field>
