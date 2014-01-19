@@ -13,7 +13,7 @@ use Igesef\NewsBundle\Form\NewsType;
 /**
  * News controller.
  *
- * @Route("/")
+ * @Route("/news")
  */
 class NewsController extends Controller
 {

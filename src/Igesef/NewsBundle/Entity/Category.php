@@ -6,9 +6,9 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Category
- * @ORM\Table(name="category")
  *
- * @ORM\Entity
+ * @ORM\Table(name="category")
+ * @ORM\Entity(repositoryClass="Igesef\NewsBundle\Entity\CategoryRepository")
  */
 class Category
 {

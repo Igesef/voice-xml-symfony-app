@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0"
+      xml:lang="en-us">
+    <noinput>
+        Please choose subcategory.
+        <reprompt/>
+    </noinput>
+
+    <form id="start">
+        <field name="subcategory_selection">
+            <prompt>
+                Please choose a subcategory for {{ category }}.
+                Available choices are: {% for subcategory in subcategories %} {{ subcategory.name }}; {% endfor %}
+            </prompt>
+            <grammar mode="voice" root="subcategories">
+                <rule id="subcategories" scope="public">
+                    <one-of>
+                        {% for subcategory in subcategories %}
+                        <item>{{ subcategory.name }}</item>
+                        {% endfor %}
+                    </one-of>
+                </rule>
+            </grammar>
+        </field>
+
+
+        <field name="news_choice"
+               cond="subcategory_selection !== ''">
+            <grammar mode="voice" root="listen">
+                <rule id="listen" scope="public">
+                    <one-of>
+                        <item>listen</item>
+                        <item>subscribe</item>
+                    </one-of>
+                </rule>
+            </grammar>
+            <prompt>
+                If you want to subscribe, say subscribe. If you want to hear the news first, please say listen.
+            </prompt>
+
+            <filled>
+                <if cond="news_choice=='listen'">
+                    News for <value expr="subcategory_selection"/>...
+                    <clear namelist="subscription_listen"/>
+                </if>
+            </filled>
+        </field>
+
+        <field name="subscription_listen" expr="'no'">
+            <prompt>
+                Would you like to subscribe for <value expr="subcategory_selection"/> news?
+            </prompt>
+            <grammar mode="voice" root="subscribe">
+                <rule id="subscribe" scope="public">
+                    <one-of>
+                        <item>yes</item>
+                        <item>no</item>
+                    </one-of>
+                </rule>
+            </grammar>
+            <filled>
+                <if cond="subscription_listen == 'no'">
+                    <goto next="#end"/>
+                </if>
+            </filled>
+        </field>
+
+        <subdialog name="subscription" src="{{ path('subscribe') }}">
+            <param name="category" expr="subcategory_selection"/>
+        </subdialog>
+
+        <filled namelist="subscription">
+            You want to receive
+            <value expr="subscription.frequency"/>
+            messages for category
+            <value expr="subcategory_selection"/>
+            sent to phone number
+            <value expr="subscription.phoneNumber"/>
+            <goto next="#end"/>
+        </filled>
+    </form>
+
+    <form id="end">
+        <field name="ending">
+            <prompt>
+                Would you like to hear or subscribe for more news?
+            </prompt>
+            <grammar mode="voice" root="end">
+                <rule id="end" scope="public">
+                    <one-of>
+                        <item>yes</item>
+                        <item>no</item>
+                    </one-of>
+                </rule>
+            </grammar>
+            <filled>
+                <if cond="ending=='yes'">
+                    <clear/>
+                    <submit next="{{ path('main') }}"/>
+                <elseif cond="ending=='no'"/>
+                    <prompt>
+                        Goodbye, thanks for calling.
+                    </prompt>
+                </if>
+            </filled>
+        </field>
+    </form>
+</vxml>

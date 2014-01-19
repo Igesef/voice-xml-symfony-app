@@ -8,137 +8,26 @@
 
     <form id="start">
 
-        <field name="categoryselection">
+        <field name="category_selection">
             <prompt>
-                Welcome to news service. Please choose a topic you are interested in. Available choices are:
-                World, Science, Sports, News of the day. After selecting topic and subtopic you can choose to listen to
-                the subtopic news or choose to subscribe for text messages subscription, for selected subtopic
+                Welcome to news service. Please choose news category you are interested in. Available choices are:
+                {% for category in categories %} {{ category }} {% endfor %}. You can also listen to most important
+                news of the day, by saying "news of the day". After selecting main category and subcategory, you can
+                choose to listen to the subcategory news or choose to subscribe for text messages subscription service
+                for selected subcategory.
             </prompt>
-            <grammar mode="voice" root="categoryoptions">
-                <rule id="categoryoptions" scope="public">
+            <grammar mode="voice" root="category_options">
+                <rule id="category_options" scope="public">
                     <one-of>
-                        <item>World</item>
-                        <item>Science</item>
-                        <item>Sports</item>
+                        {% for category in categories %} <item>{{ category.name }} </item>{% endfor %}
                         <item>News of the day</item>
                     </one-of>
                 </rule>
             </grammar>
 
             <filled>
-                <if cond="categoryselection=='World'">
-                    <prompt>
-                        You have selected World.
-                    </prompt>
-                    <goto next="#world-news"/>
-                    <else/>
-                    <prompt>
-                        Not implemented
-                    </prompt>
-                    <goto next="#end"/>
-                </if>
-            </filled>
-        </field>
-    </form>
-
-
-    <form id="world-news">
-        <field name="worldselection">
-            <prompt>
-                Please choose a world region for which you would like to hear the news.
-                Available choices are: Europe; North America; South America; Asia;
-            </prompt>
-            <grammar mode="voice" root="worldtopics">
-                <rule id="worldtopics" scope="public">
-                    <one-of>
-                        <item>Europe</item>
-                        <item>North America</item>
-                        <item>South America</item>
-                        <item>Asia</item>
-                    </one-of>
-                </rule>
-            </grammar>
-        </field>
-
-
-        <field name="news_choice"
-               cond="worldselection !== ''">
-            <grammar mode="voice" root="listen">
-                <rule id="listen" scope="public">
-                    <one-of>
-                        <item>listen</item>
-                        <item>subscribe</item>
-                    </one-of>
-                </rule>
-            </grammar>
-            <prompt>
-                If you want to subscribe, say subscribe. If you want to hear the news first, please say listen.
-            </prompt>
-
-            <filled>
-                <if cond="news_choice=='listen'">
-                    News for<value expr="worldselection"/>...
-                    <clear namelist="subscription_listen"/>
-                </if>
-            </filled>
-        </field>
-
-        <field name="subscription_listen" expr="'no'">
-            <prompt>
-                Would you like to subscribe for european news?
-            </prompt>
-            <grammar mode="voice" root="subscribe">
-                <rule id="subscribe" scope="public">
-                    <one-of>
-                        <item>yes</item>
-                        <item>no</item>
-                    </one-of>
-                </rule>
-            </grammar>
-            <filled>
-                <if cond="subscription_listen == 'no'">
-                    <goto next="#end"/>
-                </if>
-            </filled>
-        </field>
-
-        <subdialog name="subscription" src="{{ path('subscribe') }}">
-            <param name="category" expr="worldselection"/>
-        </subdialog>
-
-        <filled namelist="subscription">
-            You want to receive
-            <value expr="subscription.frequency"/>
-            messages for topic
-            <value expr="worldselection"/>
-            sent to phone number
-            <value expr="subscription.phoneNumber"/>
-            <goto next="#end"/>
-        </filled>
-    </form>
-
-    <form id="end">
-        <field name="ending">
-            <prompt>
-                Would you like to hear or subscribe for more news?
-            </prompt>
-            <grammar mode="voice" root="end">
-                <rule id="end" scope="public">
-                    <one-of>
-                        <item>yes</item>
-                        <item>no</item>
-                    </one-of>
-                </rule>
-            </grammar>
-            <filled>
-                <if cond="ending=='yes'">
-                    <clear/>
-                    <goto next="#start"/>
-                    <elseif cond="ending=='no'"/>
-                    <prompt>
-                        Goodbye, thanks for calling.
-                    </prompt>
-                </if>
+                <value expr="category_selection"/>
+                <submit next="{{ path('subcategories') }}" method="POST"/>
             </filled>
         </field>
     </form>
