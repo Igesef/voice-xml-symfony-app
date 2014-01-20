@@ -12,9 +12,9 @@
             <prompt>
                 Welcome to news service. Please choose news category you are interested in. Available choices are:
                 {% for category in categories %} {{ category }}; {% endfor %}. You can also listen to most important
-                news of the day, by saying "news of the day". After selecting main category and subcategory, you can
-                choose to listen to the subcategory news or choose to subscribe for text messages subscription service
-                for selected subcategory.
+                news of the day, by saying "news of the day". After selecting main category and sub-category, you can
+                choose to listen to the sub-category news or choose to subscribe for text messages subscription service
+                for selected sub-category.
             </prompt>
             <grammar mode="voice" root="category_options">
                 <rule id="category_options" scope="public">

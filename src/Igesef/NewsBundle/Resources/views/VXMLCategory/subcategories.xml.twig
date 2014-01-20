@@ -9,7 +9,7 @@
     <form id="start">
         <field name="category">
             <prompt>
-                Please choose a subcategory for {{ category }}.
+                Please choose a sub-category for {{ category }}.
                 Available choices are: {% for subcategory in subcategories %} {{ subcategory.name }}; {% endfor %}
             </prompt>
             <grammar mode="voice" root="subcategories">

@@ -2,18 +2,20 @@
 <vxml version="2.0"
       xml:lang="en-us">
     <noinput>
-        Please choose subcategory.
+        Please, make a selection.
         <reprompt/>
     </noinput>
 
     <form id="start">
-        <prompt>
-            News for {{ category }}.
-            {% for info in news %}
-                {{ info.title }}:
-                {{ info.content }}.
-            {% endfor %}
-        </prompt>
+        <block>
+            <prompt>
+                News for {{ category }}.
+                {% for info in news %}
+                    {{ info.title }}:
+                    {{ info.content }}.
+                {% endfor %}
+            </prompt>
+        </block>
 
         <field name="subscription_listen">
             <prompt>
@@ -65,7 +67,7 @@
             <filled>
                 <if cond="ending=='yes'">
                     <clear/>
-                    <submit next="{{ path('main') }}"/>
+                    <goto next="{{ path('main') }}"/>
                 <elseif cond="ending=='no'"/>
                     <prompt>
                         Goodbye, thanks for calling.
