@@ -41,27 +41,6 @@
             <filled>
                 <if cond="news_choice=='listen'">
                     <submit next="{{ path('news-by-category') }}"/>
-
-                    <clear namelist="subscription_listen"/>
-                </if>
-            </filled>
-        </field>
-
-        <field name="subscription_listen" expr="'no'">
-            <prompt>
-                Would you like to subscribe for <value expr="category"/> news?
-            </prompt>
-            <grammar mode="voice" root="subscribe">
-                <rule id="subscribe" scope="public">
-                    <one-of>
-                        <item>yes</item>
-                        <item>no</item>
-                    </one-of>
-                </rule>
-            </grammar>
-            <filled>
-                <if cond="subscription_listen == 'no'">
-                    <goto next="#end"/>
                 </if>
             </filled>
         </field>
