@@ -14,7 +14,8 @@
                 {{ info.content }}.
             {% endfor %}
         </prompt>
-        <field name="subscription_listen" expr="'no'">
+
+        <field name="subscription_listen">
             <prompt>
                 Would you like to subscribe for {{ category }} news?
             </prompt>
@@ -34,14 +35,14 @@
         </field>
 
         <subdialog name="subscription" src="{{ path('subscribe') }}">
-            <param name="category" expr="{{ category }}"/>
+            <param name="category" expr="'{{ category }}'"/>
         </subdialog>
 
         <filled namelist="subscription">
             You want to receive
             <value expr="subscription.frequency"/>
             messages for category
-            <value expr="{{ category }}"/>
+            <value expr="'{{ category }}'"/>
             sent to phone number
             <value expr="subscription.phoneNumber"/>
             <goto next="#end"/>
