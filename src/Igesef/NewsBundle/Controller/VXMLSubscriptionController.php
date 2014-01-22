@@ -70,5 +70,24 @@ class VXMLSubscriptionController extends Controller
 
         return $this->render("IgesefNewsBundle:VXMLSubscription:subscribe-parse.xml.twig", array(), $response);
     }
+
+    /**
+     * Action for subscribe subdialog grammar
+     *
+     * @Route("/grammar", name="subscribe-grammar")
+     * @Method("GET")
+     */
+    public function grammarAction()
+    {
+        $categories = $this->getDoctrine()->getManager()->getRepository('IgesefNewsBundle:Category')->findAll();
+
+        $response = new Response();
+
+        return $this->render(
+            "IgesefNewsBundle:VXMLSubscription:grammar.xml.twig",
+            array('categories' => $categories),
+            $response
+        );
+    }
 }
  

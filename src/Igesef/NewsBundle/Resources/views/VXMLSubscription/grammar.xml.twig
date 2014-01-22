@@ -1,0 +1,130 @@
+<?xml version= "1.0" encoding="UTF-8" ?>
+<grammar xmlns="http://www.w3.org/2001/06/grammar" xml:lang="en-US">
+
+    <rule id="grammar" scope="public">
+        <!-- powtarzamy 0 - 1 razy -->
+        <item repeat="0-1">
+            <ruleref uri="#FILLER_INITIAL"/>
+        </item>
+        <one-of>
+            <item>
+                <item repeat="0-1"><ruleref uri="#NUMBER"/><tag>out.number=rules.NUMBER</tag></item>
+                <item repeat="0-1"><ruleref uri="#CATEGORY"/><tag>out.category=rules.CATEGORY.category</tag></item>
+                <item><ruleref uri="#FREQUENCY"/><tag>out.frequency=rules.FREQUENCY.frequency</tag></item>
+            </item>
+            <item>
+                <item repeat="0-1"><ruleref uri="#FREQUENCY"/><tag>out.frequency=rules.FREQUENCY.frequency</tag></item>
+                <item repeat="0-1"><ruleref uri="#CATEGORY"/><tag>out.category=rules.CATEGORY.category</tag></item>
+                <item><ruleref uri="#NUMBER"/><tag>out.number=rules.NUMBER</tag></item>
+            </item>
+            <item>
+                <item repeat="0-1"><ruleref uri="#NUMBER"/><tag>out.number=rules.NUMBER</tag></item>
+                <item repeat="0-1"><ruleref uri="#FREQUENCY"/><tag>out.frequency=rules.FREQUENCY.frequency</tag></item>
+                <item><ruleref uri="#CATEGORY"/><tag>out.category=rules.CATEGORY.category</tag></item>
+            </item>
+            <item>
+                <item><ruleref uri="#FREQUENCY"/><tag>out.frequency=rules.FREQUENCY.frequency</tag></item>
+                <item><ruleref uri="#NUMBER"/><tag>out.number=rules.NUMBER</tag></item>
+                <item><ruleref uri="#CATEGORY"/><tag>out.category=rules.CATEGORY.category</tag></item>
+            </item>
+
+            <item>
+                <item><ruleref uri="#CATEGORY"/><tag>out.category=rules.CATEGORY.category</tag></item>
+                <item><ruleref uri="#FREQUENCY"/><tag>out.frequency=rules.FREQUENCY.frequency</tag></item>
+                <item><ruleref uri="#NUMBER"/><tag>out.number=rules.NUMBER</tag></item>
+            </item>
+            <item>
+                <item><ruleref uri="#CATEGORY"/><tag>out.category=rules.CATEGORY.category</tag></item>
+                <item><ruleref uri="#NUMBER"/><tag>out.number=rules.NUMBER</tag></item>
+                <item><ruleref uri="#FREQUENCY"/><tag>out.frequency=rules.FREQUENCY.frequency</tag></item>
+            </item>
+        </one-of>
+    </rule>
+
+    <!-- częstotliwość -->
+    <rule id="FREQUENCY">
+        <one-of>
+            <item>
+                <!-- powtarzamy 0 - 1 razy -->
+                <item repeat="0-1">
+                    <ruleref uri="#FILLER_JOIN"/>
+                </item>
+                <one-of>
+                    <item>once a day<tag>out.frequency="once a day"</tag></item>
+                    <item>twice a day<tag>out.frequency="twice a day"</tag></item>
+                    <item>every other day<tag>out.frequency="every other day"</tag></item>
+                </one-of>
+            </item>
+        </one-of>
+    </rule>
+
+
+    <rule id="NUMBER">
+        <item repeat="6-12">
+            <item>
+                <ruleref uri="#ZERO_TO_NINE_1"/>
+            </item>
+            <tag>out = out + rules.ZERO_TO_NINE_1.subSlot </tag>
+        </item>
+    </rule>
+
+    <!-- miejsca  -->
+    <rule id="FILLER_JOIN" scope="public">
+        <one-of>
+            <item>and</item>
+            <item>with</item>
+        </one-of>
+    </rule>
+
+    <!-- miejsca  -->
+    <rule id="FILLER_INITIAL" scope="public">
+        <one-of>
+            <item>I'd like to</item>
+            <item>I'd like to subscribe</item>
+            <item>I would like to subscribe</item>
+
+            <item>subscribe me to</item>
+            <item>I want to</item>
+            <item>I want to subscribe</item>
+        </one-of>
+    </rule>
+
+    <!-- kategoria -->
+    <rule id="CATEGORY">
+        <one-of>
+            <item><!-- powtarzamy 0 - 1 razy -->
+                <item repeat="0-1"><ruleref uri="#FILLER_JOIN"/></item>
+                <one-of>
+                    {% for category in categories %}
+                    <item>{{ category.name}}</item><tag>out.category="{{ category.name }}"</tag>
+                    {% endfor %}
+                </one-of>
+            </item>
+        </one-of>
+    </rule>
+
+    <rule id="ZERO_TO_NINE_1">
+        <one-of>
+            <item>0 <tag>out.subSlot="0";</tag></item>
+            <item>1 <tag>out.subSlot="1";</tag></item>
+            <item>2 <tag>out.subSlot="2";</tag></item>
+            <item>3 <tag>out.subSlot="3";</tag></item>
+            <item>4 <tag>out.subSlot="4";</tag></item>
+            <item>5 <tag>out.subSlot="5";</tag></item>
+            <item>6 <tag>out.subSlot="6";</tag></item>
+            <item>7 <tag>out.subSlot="7";</tag></item>
+            <item>8 <tag>out.subSlot="8";</tag></item>
+            <item>9 <tag>out.subSlot="9";</tag></item>
+        </one-of>
+    </rule>
+
+    <!-- miejsca  -->
+    <rule id="FILLER_CATEGORY" scope="public">
+        <one-of>
+            <item>by</item>
+            <item>over</item>
+            <item>for</item>
+            <item>via</item>
+        </one-of>
+    </rule>
+</grammar>

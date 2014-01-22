@@ -2,34 +2,62 @@
 <vxml version="2.0"
       xml:lang="en-us">
     <form>
-        <var name="category"/>
-        <block>
+        <grammar src="{{ path('subscribe-parse') }}#grammar" type="application/grammar-xml"/>
+        <var name="prompted" expr="false"/>
+
+        <initial name="INITIAL" cond="true" expr="">
             <prompt>
-                You have selected to subscribe to <value expr="category"/> news.
+                Please, specify a frequency of the messages, your phone number and, if you want to, another category of subscription.
             </prompt>
-        </block>
+            <catch event="nomatch noinput" count="1">
+                <prompt>Specify frequency of the messages, method of delivery and, if you want to, another category of subscription. For instance: twice a day, 555 50 50 50, sports.</prompt>
+            </catch>
+            <catch event="nomatch noinput" count="2">
+                <prompt>I'll ask you for information one piece at a time.</prompt>
+                <assign name="INITIAL" expr="true"/>
+                <assign name="secondCategory" expr=""/>
+            </catch>
+        </initial>
+        <var name="categoryselected" expr="false"/>
+        <var name="frequencyselected" expr="false"/>
+        <var name="phoneNumberselected" expr="false"/>
+
         <field name="frequency">
-            <prompt>
-                Please choose frequency of your messages. Available choices are: Twice a day, Once a day, Every other day, Twice a week, Once a week
-            </prompt>
-            <grammar mode="voice" root="frequencyoptions">
-                <rule id="frequencyoptions" scope="public">
-                    <one-of>
-                        <item>Once a day</item>
-                        <item>Every other day</item>
-                        <item>Twice a week</item>
-                        <item>Once a week </item>
-                    </one-of>
-                </rule>
-            </grammar>
+            <prompt>Please choose frequency of your messages </prompt>
+            <filled>
+                <assign name="frequencyselected" expr="true"/>
+            </filled>
         </field>
-        <field name="phoneNumber" type="digits">
-            <prompt>
-                Please provide your phone number.
-            </prompt>
+
+        <field name="phoneNumber">
+            <prompt>Please provide your phone number</prompt>
+            <filled>
+                <assign name="phoneNumberselected" expr="true"/>
+            </filled>
         </field>
-        <filled>
-            <return namelist="frequency phoneNumber"/>
+        <field name="secondCategory" expr="none">
+            <prompt>Please, provide additional subscription category or say none if you want to subscribe only category</prompt>
+            <filled>
+                <assign name="categoryselected" expr="true"/>
+            </filled>
+        </field>
+        <filled mode="any">
+            <if cond="prompted==false">
+                <if cond="phoneNumberselected==false">
+                    Please, provide all fields.
+                    <assign name="prompted" expr="true"/>
+                    <elseif cond="frequencyselected==false"/>
+                    Please, provide all fields.
+                    <assign name="prompted" expr="true"/>
+                    <elseif cond="phoneNumberselected==false"/>
+                    Please, provide all fields.
+                    <assign name="prompted" expr="true"/>
+                </if>
+            </if>
+        </filled>
+        <filled mode="all">
+            <prompt>You have subscribed for topic <value expr="category"/>. Your subscription messages will be sent <value expr="frequency"/> for <value expr="phoneNumber"/>.</prompt>
+            <return namelist="frequency phoneNumber secondCategory"/>
         </filled>
     </form>
 </vxml>
