@@ -47,33 +47,7 @@
             <value expr="'{{ category }}'"/>
             sent to phone number
             <value expr="subscription.phoneNumber"/>
-            <goto next="#end"/>
+            <submit next="{{ path('subscribe-parse') }}"/>
         </filled>
-    </form>
-
-    <form id="end">
-        <field name="ending">
-            <prompt>
-                Would you like to hear or subscribe for more news?
-            </prompt>
-            <grammar mode="voice" root="end">
-                <rule id="end" scope="public">
-                    <one-of>
-                        <item>yes</item>
-                        <item>no</item>
-                    </one-of>
-                </rule>
-            </grammar>
-            <filled>
-                <if cond="ending=='yes'">
-                    <clear/>
-                    <goto next="{{ path('main') }}"/>
-                <elseif cond="ending=='no'"/>
-                    <prompt>
-                        Goodbye, thanks for calling.
-                    </prompt>
-                </if>
-            </filled>
-        </field>
     </form>
 </vxml>

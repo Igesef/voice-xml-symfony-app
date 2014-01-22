@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0"
+      xml:lang="en-us">
+    <form>
+        <field name="ending">
+            <prompt>
+                Would you like to hear or subscribe for more news?
+            </prompt>
+            <grammar mode="voice" root="end">
+                <rule id="end" scope="public">
+                    <one-of>
+                        <item>yes</item>
+                        <item>no</item>
+                    </one-of>
+                </rule>
+            </grammar>
+            <filled>
+                <if cond="ending=='yes'">
+                    <clear/>
+                    <submit next="{{ path('main') }}"/>
+                    <elseif cond="ending=='no'"/>
+                    <prompt>
+                        Goodbye, thanks for calling.
+                    </prompt>
+                </if>
+            </filled>
+        </field>
+    </form>
+</vxml>

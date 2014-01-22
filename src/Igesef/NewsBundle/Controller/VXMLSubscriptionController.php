@@ -26,7 +26,25 @@ class VXMLSubscriptionController extends Controller
         $response = new Response();
         $response->headers->set('Content-Type', 'text/xml');
 
-        return $this->render("IgesefNewsBundle:VXMLSubscription:subscribe.xml.twig", array(), $response);
+        return $this->render(
+            "IgesefNewsBundle:VXMLSubscription:subscribe.xml.twig",
+            array(),
+            $response
+        );
+    }
+
+    /**
+     * Subscription action, implemented using subdialog
+     *
+     * @Route("/subscribe-parse", name="subscribe-parse")
+     * @Method("GET")
+     */
+    public function subscribeParseAction()
+    {
+        $response = new Response();
+        $response->headers->set('Content-Type', 'text/xml');
+
+        return $this->render("IgesefNewsBundle:VXMLSubscription:subscribe-parse.xml.twig", array(), $response);
     }
 }
  
