@@ -46,11 +46,10 @@ class VXMLSubscriptionController extends Controller
     {
         $response = new Response();
         $categoryName = $request->get('category');
-        $frequency = $request->get('frequency');
-        $phoneNumber = $request->get('phoneNumber');
+        $frequency = $request->get('subscription_frequency');
+        $phoneNumber = $request->get('subscription_phoneNumber');
         $em = $this->getDoctrine()->getManager();
-        $categoryRepository = $this->em->getRepository('IgesefNewsBundle:Category');
-
+        $categoryRepository = $em->getRepository('IgesefNewsBundle:Category');
 
         /** @var Category $category */
         $category = $categoryRepository->findOneBy(array('name' => $categoryName));

@@ -56,7 +56,7 @@
             <value expr="category"/>
             sent to phone number
             <value expr="subscription.phoneNumber"/>
-            <submit next="{{ path('subscribe-parse') }}"/>
+            <submit next="{{ path('subscribe-parse') }}" namelist="category subscription.frequency subscription.phoneNumber"/>
         </filled>
     </form>
 </vxml>
