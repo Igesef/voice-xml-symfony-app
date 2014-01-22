@@ -96,7 +96,7 @@
                 <item repeat="0-1"><ruleref uri="#FILLER_JOIN"/></item>
                 <one-of>
                     {% for category in categories %}
-                    <item>{{ category.name}}</item><tag>out.category="{{ category.name }}"</tag>
+                    <item>{{ category.name}}<tag>out.category="{{ category.name }}"</tag></item>
                     {% endfor %}
                 </one-of>
             </item>
