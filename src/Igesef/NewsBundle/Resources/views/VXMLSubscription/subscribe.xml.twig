@@ -2,7 +2,7 @@
 <vxml version="2.0"
       xml:lang="en-us">
     <form>
-        <grammar src="{{ path('subscribe-parse') }}#grammar" type="application/grammar-xml"/>
+        <grammar src="{{ path('subscribe-grammar') }}#grammar" type="application/grammar-xml"/>
         <var name="prompted" expr="false"/>
 
         <initial name="INITIAL" cond="true" expr="">
@@ -35,7 +35,7 @@
                 <assign name="phoneNumberselected" expr="true"/>
             </filled>
         </field>
-        <field name="secondCategory" expr="none">
+        <field name="secondCategory" expr="'none'">
             <prompt>Please, provide additional subscription category or say none if you want to subscribe only category</prompt>
             <filled>
                 <assign name="categoryselected" expr="true"/>
