@@ -82,7 +82,7 @@ class VXMLSubscriptionController extends Controller
         $categories = $this->getDoctrine()->getManager()->getRepository('IgesefNewsBundle:Category')->findAll();
 
         $response = new Response();
-        $response->headers->set('Content-Type', 'text/xml');
+        $response->headers->set('Content-Type', 'application/grammar-xml');
 
         return $this->render(
             "IgesefNewsBundle:VXMLSubscription:grammar.xml.twig",
