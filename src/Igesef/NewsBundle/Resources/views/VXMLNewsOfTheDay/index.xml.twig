@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<vxml version="2.0"
+      xml:lang="en-us">
+    <noinput>
+        Please, make a selection.
+        <reprompt/>
+    </noinput>
+
+    <form id="start">
+        <var name="category" expr="'news of the day'"/>
+
+        <block>
+            <prompt>
+                News of the day
+                {% for news in entities %}
+                    {{ news.news.title }}:
+                    {{ news.news.content }}.
+                {% endfor %}
+            </prompt>
+        </block>
+
+        <field name="subscription_listen">
+            <prompt>
+                Would you like to subscribe for news of the day?
+            </prompt>
+            <grammar mode="voice" root="subscribe">
+                <rule id="subscribe" scope="public">
+                    <one-of>
+                        <item>yes</item>
+                        <item>no</item>
+                    </one-of>
+                </rule>
+            </grammar>
+            <filled>
+                <if cond="subscription_listen == 'no'">
+                    <goto next="#end"/>
+                </if>
+            </filled>
+        </field>
+
+        <subdialog name="subscription" src="{{ path('subscribe') }}">
+        </subdialog>
+
+        <filled namelist="subscription">
+            You want to receive
+            <value expr="subscription.frequency"/>
+            messages for
+            <if cond="subscription.secondCategory!='none'">
+                categories  <value expr="subscription.secondCategory"/> and
+            <else/>
+                category
+            </if>
+            news of the day sent to phone number
+
+            <value expr="subscription.phoneNumber"/>
+            <submit next="{{ path('subscribe-parse') }}" namelist="category subscription.frequency subscription.phoneNumber subscription.secondCategory"/>
+        </filled>
+    </form>
+</vxml>

@@ -65,6 +65,11 @@ class VXMLCategoryController extends Controller
             $categoryName = $request->get('category');
             $repository = $this->getRepository();
 
+            if ($categoryName == 'news of the day') {
+                return $this->forward(
+                    'IgesefNewsBundle:VXMLNewsOfTheDay:index'
+                );
+            }
             /** @var Category $category */
             $category = $repository->findOneBy(array('name' => $categoryName));
 
@@ -73,6 +78,7 @@ class VXMLCategoryController extends Controller
             }
 
             $categories = $repository->findSubcategoriesByCategory($category);
+
 
             if (!empty($categories)) {
                 $response = new Response();

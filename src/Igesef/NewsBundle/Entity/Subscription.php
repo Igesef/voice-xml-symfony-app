@@ -37,7 +37,7 @@ class Subscription
     private $frequency;
 
     /**
-     * @var Collection
+     * @var Category[]|Collection
      *
      * @ORM\ManyToMany(targetEntity="Category")
      * @ORM\JoinTable(name="subscription_has_category",

@@ -35,7 +35,7 @@
                 <assign name="phoneNumberselected" expr="true"/>
             </filled>
         </field>
-        <field name="secondCategory" expr="'none'">
+        <field name="secondCategory">
             <prompt>Please, provide additional subscription category or say none if you want to subscribe only category</prompt>
             <filled>
                 <assign name="categoryselected" expr="true"/>
@@ -43,6 +43,9 @@
         </field>
         <filled mode="any">
             <if cond="prompted==false">
+                <if cond="secondCategory==''">
+                    <assign name="secondCategory" expr="'none'"/>
+                </if>
                 <if cond="phoneNumberselected==false">
                     Please, provide all fields.
                     <assign name="prompted" expr="true"/>

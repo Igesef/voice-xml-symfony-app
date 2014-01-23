@@ -58,14 +58,8 @@
         </one-of>
     </rule>
 
-
     <rule id="NUMBER">
-        <item repeat="6-12">
-            <item>
-                <ruleref uri="#ZERO_TO_NINE_1"/>
-            </item>
-            <tag>out = out + rules.ZERO_TO_NINE_1.subSlot </tag>
-        </item>
+        <item><ruleref uri="builtin:grammar/digits"/></item>
     </rule>
 
     <!-- miejsca  -->
@@ -95,6 +89,7 @@
             <item><!-- powtarzamy 0 - 1 razy -->
                 <item repeat="0-1"><ruleref uri="#FILLER_JOIN"/></item>
                 <one-of>
+                    <item>none</item>
                     {% for category in categories %}
                     <item>{{ category.name}}<tag>out.category="{{ category.name }}"</tag></item>
                     {% endfor %}
