@@ -67,6 +67,7 @@
         <one-of>
             <item>and</item>
             <item>with</item>
+            <item>subscription</item>
         </one-of>
     </rule>
 
@@ -76,9 +77,10 @@
             <item>I'd like to</item>
             <item>I'd like to subscribe</item>
             <item>I would like to subscribe</item>
-
             <item>subscribe me to</item>
+            <item>subscribe me for</item>
             <item>I want to</item>
+            <item>I want to make</item>
             <item>I want to subscribe</item>
         </one-of>
     </rule>
@@ -89,7 +91,7 @@
             <item><!-- powtarzamy 0 - 1 razy -->
                 <item repeat="0-1"><ruleref uri="#FILLER_JOIN"/></item>
                 <one-of>
-                    <item>none</item>
+                    <item>none<tag>out.category="none"</tag></item>
                     {% for category in categories %}
                     <item>{{ category.name}}<tag>out.category="{{ category.name }}"</tag></item>
                     {% endfor %}
@@ -122,4 +124,5 @@
             <item>via</item>
         </one-of>
     </rule>
+
 </grammar>
