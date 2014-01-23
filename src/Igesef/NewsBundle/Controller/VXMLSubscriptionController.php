@@ -46,6 +46,7 @@ class VXMLSubscriptionController extends Controller
     {
         $response = new Response();
         $categoryName = $request->get('category');
+        $secondCategory = $request->get('subscription_secondCategory');
         $frequency = $request->get('subscription_frequency');
         $phoneNumber = $request->get('subscription_phoneNumber');
         $em = $this->getDoctrine()->getManager();
@@ -58,7 +59,13 @@ class VXMLSubscriptionController extends Controller
             throw $this->createNotFoundException('Unable to find Category entity');
         }
 
+
         $subscription = new Subscription();
+
+        if ($secondCategory !== 'none') {
+            $second = $categoryRepository->findOneBy(array('name' => $secondCategory));
+            $subscription->addCategory($second);
+        }
         $subscription->addCategory($category)
             ->setFrequency($frequency)
             ->setPhoneNumber($phoneNumber);
