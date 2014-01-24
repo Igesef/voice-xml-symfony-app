@@ -28,10 +28,11 @@ class VXMLSubscriptionController extends Controller
     {
         $response = new Response();
         $response->headers->set('Content-Type', 'text/xml');
+        $categories = $this->getDoctrine()->getManager()->getRepository('IgesefNewsBundle:Category')->findAll();
 
         return $this->render(
             "IgesefNewsBundle:VXMLSubscription:subscribe.xml.twig",
-            array(),
+            array('categories' => $categories),
             $response
         );
     }

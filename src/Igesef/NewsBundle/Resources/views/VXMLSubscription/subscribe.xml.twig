@@ -35,7 +35,9 @@
             </filled>
         </field>
         <field name="secondCategory">
-            <prompt>Please, provide additional subscription category or say none if you want to subscribe only category</prompt>
+            <prompt>Please, provide additional subscription category or say none if you want to subscribe only category
+                Available categories{% for category in categories %} {{ category }}; {% endfor %}
+            </prompt>
             <filled>
                 <assign name="categoryselected" expr="true"/>
             </filled>
